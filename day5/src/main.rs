@@ -209,9 +209,7 @@ fn pt1(ranges: &Vec<Range>, ingredients: &Vec<u64>) -> anyhow::Result<()> {
 
 #[allow(dead_code, unused_variables)]
 fn pt2(ranges: &Vec<Range>) -> anyhow::Result<()> {
-    let fridge = Fridge::new(ranges);
-    let fridge = fridge.sort_contents();
-    let fridge = fridge.pack_contents();
+    let fridge = Fridge::new(ranges).sort_contents().pack_contents();
     let freshies = fridge.fresh_ingredients();
     println!("{}", freshies);
     Ok(())
