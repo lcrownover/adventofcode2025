@@ -73,7 +73,7 @@ impl Eq for Range {}
 
 impl Ord for Range {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        match self == other {
+        match self.start == other.start {
             true => self.end.cmp(&other.end),
             false => self.start.cmp(&other.start),
         }
