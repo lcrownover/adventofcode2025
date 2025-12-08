@@ -65,6 +65,33 @@ fn pt2(grid: &Vec<Vec<char>>) -> Result<()> {
     Ok(())
 }
 
+#[allow(dead_code, unused_variables)]
+fn pt22(grid: &Vec<Vec<char>>) -> Result<()> {
+    let row_len = grid[0].len();
+    let mut counts: Vec<u64> = vec![0; grid.len() - 1];
+    let mut next_start_col = 0;
+    for (ri, row) in grid.iter().enumerate() {
+        for ci in 0..row_len {
+            if ci < next_start_col {
+                continue;
+            }
+            if row[ci] == 'S' {
+                counts[ci] += 1;
+                next_start_col = row.iter().position(|&c| c == 'S').unwrap() - 1;
+            }
+            if row[ci] == '^' {
+                counts[ci - 1] += counts[ci];
+                counts[ci + 1] += counts[ci];
+                counts[ci] = 0;
+                next_start_col = row.iter().position(|&c| c == '^').unwrap() - 1;
+            }
+        }
+    }
+    let total: u64 = counts.iter().sum();
+    println!("{}", total);
+    Ok(())
+}
+
 fn main() -> Result<()> {
     let contents = std::fs::read_to_string("input.txt")?;
     // let grid: Vec<Vec<String>> = contents
@@ -76,6 +103,7 @@ fn main() -> Result<()> {
         .lines()
         .map(|l| l.chars().collect::<Vec<char>>())
         .collect();
-    pt2(&grid2.clone())?;
+    // pt2(&grid2.clone())?;
+    pt22(&grid2);
     Ok(())
 }
