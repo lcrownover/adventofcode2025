@@ -34,46 +34,22 @@ fn display_grid(grid: &Vec<Vec<char>>) {
 }
 
 fn traverse(grid: &Vec<Vec<char>>, finished_count: &mut u64, x: usize, y: usize) {
-    let mut grid = grid.clone();
-    let grid_width = grid[0].len();
     let grid_height = grid.len();
     let mut y = y;
-    // let mut line_len = 0;
     loop {
-        if y > grid_height - 1 {
+        if y >= grid_height {
             *finished_count += 1;
-            // for i in 1..=line_len + 1 {
-            //     grid[y - i][x] = '.';
-            // }
+            println!("{}", finished_count);
             return;
         }
-        if x > grid_width - 1 {
-            // grid[y - 1][x] = '.';
-            return;
-        }
-        display_grid(&grid);
-        println!("finished beams: {}", finished_count);
+        // display_grid(&grid);
+        // println!("finished beams: {}", finished_count);
         // sleep(Duration::from_millis(20));
-        sleep(Duration::from_secs(1));
-        let prev_above = &grid[y - 1][x];
-        let curr_sym = &grid[y][x];
-        if (*prev_above == '|' || *prev_above == 'S') && *curr_sym == '^' {
-            grid[y][x - 1] = '|';
+        // sleep(Duration::from_secs(1));
+        if grid[y][x] == '^' {
             traverse(&grid, finished_count, x - 1, y);
-            grid[y][x - 1] = '.';
-
-            grid[y][x + 1] = '|';
             traverse(&grid, finished_count, x + 1, y);
-            grid[y][x + 1] = '.';
-
-            // for i in 1..=line_len + 1 {
-            //     grid[y - i][x] = '.';
-            // }
             break;
-        }
-        if *prev_above == '|' || *prev_above == 'S' {
-            grid[y][x] = '|';
-            // line_len += 1;
         }
         y += 1;
     }
@@ -90,7 +66,7 @@ fn pt2(grid: &Vec<Vec<char>>) -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    let contents = std::fs::read_to_string("test_input.txt")?;
+    let contents = std::fs::read_to_string("input.txt")?;
     // let grid: Vec<Vec<String>> = contents
     //     .lines()
     //     .map(|l| l.chars().map(|c| c.to_string()).collect::<Vec<String>>())
